@@ -5,53 +5,62 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    width: 2240px; height: 1120px;
+    width: 2240px; height: 900px;
     background: #0b1220;
     font-family: 'SF Mono', Menlo, Consolas, monospace;
     color: #dbe7f4;
-    padding: 70px 80px;
+    padding: 60px 70px;
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
-  h2 { font-size: 44px; color: #f2f7fd; margin-bottom: 10px; font-weight: 700; }
+  h2 { font-size: 52px; color: #f2f7fd; font-weight: 700; }
   .dim { color: #6b8aa8; }
-  .grid {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(120,160,210,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(120,160,210,0.05) 1px, transparent 1px);
-    background-size: 56px 56px;
-    z-index: 0;
-  }
-  .flow { display: flex; align-items: center; gap: 34px; margin-top: 90px; position: relative; z-index: 1; }
+  .flow { display: flex; align-items: stretch; gap: 26px; margin-top: 54px; flex: 1; }
   .box {
     background: #101a2c;
-    border: 2px solid #23374f;
-    border-radius: 14px;
-    padding: 30px 34px;
-    min-width: 300px;
+    border: 3px solid #23374f;
+    border-radius: 16px;
+    padding: 34px 36px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
-  .box .t { font-size: 30px; color: #2ee6a8; margin-bottom: 12px; }
-  .box .d { font-size: 24px; color: #9db8d4; line-height: 1.5; }
-  .arrow { font-size: 46px; color: #3d5a7a; }
+  .box .t { font-size: 40px; color: #2ee6a8; margin-bottom: 16px; font-weight: 700; }
+  .box .d { font-size: 33px; color: #9db8d4; line-height: 1.45; }
+  .arrow { font-size: 56px; color: #3d5a7a; align-self: center; flex: 0; }
   .result {
     background: rgba(46,230,168,0.08);
-    border: 2px solid rgba(46,230,168,0.4);
-    border-radius: 14px;
-    padding: 30px 34px;
+    border: 3px solid rgba(46,230,168,0.4);
+    border-radius: 16px;
+    padding: 34px 36px;
+    flex: 1.35;
+    display: flex; flex-direction: column; justify-content: center;
   }
-  .result .t { font-size: 30px; color: #2ee6a8; }
-  .result .d { font-size: 24px; color: #cfe3f7; margin-top: 12px; line-height: 1.5; }
-  .hook { position: absolute; bottom: 120px; left: 80px; font-size: 26px; color: #e8c46a; }
+  .result .t { font-size: 40px; color: #2ee6a8; margin-bottom: 16px; font-weight: 700; }
+  .result .d { font-size: 33px; color: #cfe3f7; line-height: 1.5; }
+  .result b { color: #2ee6a8; }
+  .hook {
+    margin-top: 48px;
+    background: rgba(232,196,106,0.07);
+    border: 2px solid rgba(232,196,106,0.35);
+    border-radius: 14px;
+    padding: 30px 38px;
+    font-size: 34px;
+    color: #e8c46a;
+    line-height: 1.4;
+  }
+  .hook .dim { color: #9a8a60; }
 </style>
 </head>
 <body>
-  <div class="grid"></div>
-  <h2><span class="dim">payload:</span> как телеметрия добирается до банка</h2>
+  <h2>Телеметрия доезжает до банка зашифрованной</h2>
 
   <div class="flow">
     <div class="box">
-      <div class="t">JSON 312 полей</div>
-      <div class="d">web_rtc_ip, battery, шрифты, голоса, canvas-хеши…</div>
+      <div class="t">JSON · 312 полей</div>
+      <div class="d">WebRTC IP, батарея, шрифты,<br>голоса, canvas-хеши</div>
     </div>
     <div class="arrow">→</div>
     <div class="box">
@@ -66,15 +75,15 @@
     <div class="arrow">→</div>
     <div class="box">
       <div class="t">RSA-OAEP</div>
-      <div class="d">ключ шифруется<br>публичным ключом банка<br><span class="dim">(PEM в коде)</span></div>
+      <div class="d">ключ шифруется<br>ключом банка из кода</div>
     </div>
     <div class="arrow">→</div>
     <div class="result">
       <div class="t">POST web2web.tbank.ru</div>
-      <div class="d">{aes_key, gzip_data, nonce, tag}<br><br>ответ: <b>fingerprintId</b></div>
+      <div class="d">{aes_key, gzip_data,<br>nonce, tag}<br><br>ответ: <b>fingerprintId</b></div>
     </div>
   </div>
 
-  <div class="hook">хук: crypto.subtle.encrypt ловит AES-ключ до RSA → расшифровываем сами</div>
+  <div class="hook">Как вскрыли: обернули crypto.subtle.encrypt до загрузки скрипта <span class="dim">→</span> поймали AES-ключ до RSA <span class="dim">→</span> расшифровали свой же payload</div>
 </body>
 </html>

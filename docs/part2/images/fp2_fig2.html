@@ -5,59 +5,59 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
-    width: 2240px; height: 1240px;
+    width: 2240px; height: 1560px;
     background: #0b1220;
     font-family: 'SF Mono', Menlo, Consolas, monospace;
     color: #dbe7f4;
-    padding: 70px 80px;
-    position: relative;
+    padding: 60px 70px;
+    display: flex;
+    flex-direction: column;
   }
-  h2 { font-size: 44px; color: #f2f7fd; margin-bottom: 36px; font-weight: 700; }
+  h2 { font-size: 52px; color: #f2f7fd; font-weight: 700; }
   .dim { color: #6b8aa8; }
-  table { border-collapse: collapse; width: 100%; }
+  table { border-collapse: collapse; width: 100%; margin-top: 44px; }
   th, td {
-    border: 1px solid #23374f;
-    padding: 20px 26px;
-    font-size: 26px;
+    border: 2px solid #23374f;
+    padding: 24px 30px;
+    font-size: 34px;
     text-align: left;
+    line-height: 1.35;
   }
-  th { background: #101a2c; color: #2ee6a8; font-weight: 700; }
+  th { background: #101a2c; color: #2ee6a8; font-weight: 700; font-size: 36px; }
   td { background: rgba(16,26,44,0.85); color: #cfe3f7; }
   td.sig { color: #e8c46a; }
-  td small { color: #6b8aa8; font-size: 21px; display: block; margin-top: 6px; }
-  .verdict {
-    margin-top: 44px;
-    display: flex; gap: 40px;
-  }
+  td small { color: #6b8aa8; font-size: 28px; display: block; margin-top: 8px; }
+  .verdict { margin-top: 50px; display: flex; gap: 36px; flex: 1; }
   .card {
     flex: 1;
     background: #101a2c;
-    border: 2px solid #23374f;
-    border-radius: 14px;
-    padding: 28px 32px;
+    border: 3px solid #23374f;
+    border-radius: 16px;
+    padding: 34px 38px;
   }
   .card.android { border-color: rgba(46,230,168,0.5); }
   .card.ios { border-color: rgba(232,110,110,0.5); }
-  .card .t { font-size: 28px; margin-bottom: 10px; }
+  .card .t { font-size: 36px; margin-bottom: 14px; font-weight: 700; }
   .card.android .t { color: #2ee6a8; }
   .card.ios .t { color: #e88e6e; }
-  .card .d { font-size: 24px; color: #9db8d4; line-height: 1.55; }
+  .card .d { font-size: 32px; color: #9db8d4; line-height: 1.5; }
+  .card b { color: #cfe3f7; }
 </style>
 </head>
 <body>
-  <h2>Энтропия: Android vs iOS <span class="dim">(замеры + модель)</span></h2>
+  <h2>Почему на Android паспорт различает устройства, а на iOS нет</h2>
 
   <table>
-    <tr><th style="width:420px">Сигнал</th><th style="width:400px">Android</th><th>iOS / WKWebView</th></tr>
+    <tr><th style="width:560px">Сигнал</th><th style="width:720px">Android</th><th>iOS / WKWebView</th></tr>
     <tr>
-      <td class="sig">canvas-хеш (3 рецепта)<small>emoji-текст, градиент, picasso</small></td>
+      <td class="sig">canvas-хеш ×3<small>emoji-текст, градиент, picasso</small></td>
       <td>уникален почти всегда<br><span class="dim">SKIA + GPU попиксельно</span></td>
-      <td>3–4 класса<br><span class="dim">определён версией iOS</span></td>
+      <td>3–4 класса, хеш задаёт версия iOS</td>
     </tr>
     <tr>
       <td class="sig">WebGL unmasked renderer</td>
-      <td>«Adreno 740», «Mali-G715»…<br><span class="dim">модель GPU видна</span></td>
-      <td>«Apple GPU» у всех<br><span class="dim">модель чипа скрыта</span></td>
+      <td>«Adreno 740», «Mali-G715»… модель GPU видна</td>
+      <td>«Apple GPU» у всех, модель чипа скрыта</td>
     </tr>
     <tr>
       <td class="sig">Battery / NetworkInfo / deviceMemory</td>
@@ -66,24 +66,19 @@
     </tr>
     <tr>
       <td class="sig">шрифты, TTS-голоса, Intl</td>
-      <td>зависят от вендора: куча вариаций</td>
+      <td>зависят от вендора, куча вариаций</td>
       <td>набор фиксирован версией ОС</td>
-    </tr>
-    <tr>
-      <td class="sig">audio-отпечаток</td>
-      <td>плавает между устройствами</td>
-      <td>константа поколения чипа</td>
     </tr>
   </table>
 
   <div class="verdict">
     <div class="card android">
-      <div class="t">Android: эффективная энтропия ~40–50 бит</div>
-      <div class="d">GPU-разнобой вендоров, шрифты, баги растеризации. Паспорт различает устройства.</div>
+      <div class="t">Android: ~40–50 эффективных бит</div>
+      <div class="d">GPU-разнобой вендоров, шрифты, баги растеризации.<br><b>Паспорт различает устройства.</b></div>
     </div>
     <div class="card ios">
-      <div class="t">iOS: эффективная энтропия ~31.6 бит → ~14 000 классов</div>
-      <div class="d">версия iOS (4.5) + чип (4.5) + экран (3.6) + язык/TZ (9) + сеть (10). Тысячи айфонов с одинаковым паспортом: различает поведение и серверная история.</div>
+      <div class="t">iOS: ~31.6 бит → ~14 000 классов</div>
+      <div class="d">версия iOS (4.5) + чип (4.5) + экран (3.6) + язык (9) + сеть (10).<br><b>Тысячи айфонов с одинаковым паспортом:</b> различает поведение и серверная история.</div>
     </div>
   </div>
 </body>
