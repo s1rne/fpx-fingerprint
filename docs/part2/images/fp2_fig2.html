@@ -9,76 +9,110 @@
     background: #0b1220;
     font-family: 'SF Mono', Menlo, Consolas, monospace;
     color: #dbe7f4;
-    padding: 60px 70px;
+    padding: 56px 64px;
+  }
+  h2 { font-size: 54px; color: #f2f7fd; font-weight: 700; line-height: 1.2; }
+
+  .row {
     display: flex;
-    flex-direction: column;
+    gap: 28px;
+    margin-top: 28px;
   }
-  h2 { font-size: 52px; color: #f2f7fd; font-weight: 700; }
-  .dim { color: #6b8aa8; }
-  table { border-collapse: collapse; width: 100%; margin-top: 44px; }
-  th, td {
-    border: 2px solid #23374f;
-    padding: 24px 30px;
-    font-size: 34px;
-    text-align: left;
-    line-height: 1.35;
-  }
-  th { background: #101a2c; color: #2ee6a8; font-weight: 700; font-size: 36px; }
-  td { background: rgba(16,26,44,0.85); color: #cfe3f7; }
-  td.sig { color: #e8c46a; }
-  td small { color: #6b8aa8; font-size: 28px; display: block; margin-top: 8px; }
-  .verdict { margin-top: 50px; display: flex; gap: 36px; }
-  .card {
+  .cell {
     flex: 1;
     background: #101a2c;
     border: 3px solid #23374f;
     border-radius: 16px;
+    padding: 30px 36px;
+  }
+  .cell .sig {
+    font-size: 36px;
+    color: #e8c46a;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .cell .and {
+    font-size: 32px;
+    color: #7edcb4;
+    line-height: 1.4;
+  }
+  .cell .ios {
+    font-size: 32px;
+    color: #e8a48e;
+    line-height: 1.4;
+  }
+  .cell .lab {
+    font-size: 26px;
+    color: #6b8aa8;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+  }
+  .head { background: transparent; border: none; padding: 0 36px; }
+  .head div { font-size: 34px; font-weight: 700; }
+  .head .h-and { color: #2ee6a8; }
+  .head .h-ios { color: #e88e6e; }
+
+  .verdict { margin-top: 44px; display: flex; gap: 28px; }
+  .card {
+    flex: 1;
+    border-radius: 16px;
     padding: 34px 38px;
   }
-  .card.android { border-color: rgba(46,230,168,0.5); }
-  .card.ios { border-color: rgba(232,110,110,0.5); }
-  .card .t { font-size: 36px; margin-bottom: 14px; font-weight: 700; }
+  .card.android {
+    background: rgba(46,230,168,0.07);
+    border: 3px solid rgba(46,230,168,0.5);
+  }
+  .card.ios {
+    background: rgba(232,110,110,0.06);
+    border: 3px solid rgba(232,110,110,0.5);
+  }
+  .card .t { font-size: 38px; margin-bottom: 12px; font-weight: 700; }
   .card.android .t { color: #2ee6a8; }
   .card.ios .t { color: #e88e6e; }
-  .card .d { font-size: 32px; color: #9db8d4; line-height: 1.5; }
-  .card b { color: #cfe3f7; }
+  .card .d { font-size: 33px; color: #cfe3f7; line-height: 1.5; }
 </style>
 </head>
 <body>
   <h2>Почему на Android паспорт различает устройства, а на iOS нет</h2>
 
-  <table>
-    <tr><th style="width:560px">Сигнал</th><th style="width:720px">Android</th><th>iOS / WKWebView</th></tr>
-    <tr>
-      <td class="sig">canvas-хеш ×3<small>emoji-текст, градиент, picasso</small></td>
-      <td>уникален почти всегда<br><span class="dim">SKIA + GPU попиксельно</span></td>
-      <td>3–4 класса, хеш задаёт версия iOS</td>
-    </tr>
-    <tr>
-      <td class="sig">WebGL unmasked renderer</td>
-      <td>«Adreno 740», «Mali-G715»… модель GPU видна</td>
-      <td>«Apple GPU» у всех, модель чипа скрыта</td>
-    </tr>
-    <tr>
-      <td class="sig">Battery / NetworkInfo / deviceMemory</td>
-      <td>работают, дают биты</td>
-      <td>нет / нет / undefined</td>
-    </tr>
-    <tr>
-      <td class="sig">шрифты, TTS-голоса, Intl</td>
-      <td>зависят от вендора, куча вариаций</td>
-      <td>набор фиксирован версией ОС</td>
-    </tr>
-  </table>
+  <div class="row head">
+    <div class="cell" style="border:none; background:transparent; flex:1.1;"></div>
+    <div class="cell head" style="border:none; background:transparent;"><div class="h-and">ANDROID</div></div>
+    <div class="cell head" style="border:none; background:transparent;"><div class="h-ios">iOS / WKWebView</div></div>
+  </div>
+
+  <div class="row" style="margin-top:0;">
+    <div class="cell" style="flex:1.1;"><div class="sig">canvas-хеш ×3</div></div>
+    <div class="cell"><div class="and">уникален почти всегда</div></div>
+    <div class="cell"><div class="ios">3–4 класса, задаёт версия iOS</div></div>
+  </div>
+
+  <div class="row">
+    <div class="cell" style="flex:1.1;"><div class="sig">WebGL renderer</div></div>
+    <div class="cell"><div class="and">«Adreno 740», модель GPU видна</div></div>
+    <div class="cell"><div class="ios">«Apple GPU» у всех, чип скрыт</div></div>
+  </div>
+
+  <div class="row">
+    <div class="cell" style="flex:1.1;"><div class="sig">Battery, NetworkInfo</div></div>
+    <div class="cell"><div class="and">работают, дают биты</div></div>
+    <div class="cell"><div class="ios">нет вообще</div></div>
+  </div>
+
+  <div class="row">
+    <div class="cell" style="flex:1.1;"><div class="sig">Шрифты, голоса, Intl</div></div>
+    <div class="cell"><div class="and">зависят от вендора</div></div>
+    <div class="cell"><div class="ios">фиксированы версией ОС</div></div>
+  </div>
 
   <div class="verdict">
     <div class="card android">
-      <div class="t">Android: ~40–50 эффективных бит</div>
-      <div class="d">GPU-разнобой вендоров, шрифты, баги растеризации.<br><b>Паспорт различает устройства.</b></div>
+      <div class="t">Android: 40–50 бит</div>
+      <div class="d">паспорт различает устройства</div>
     </div>
     <div class="card ios">
-      <div class="t">iOS: ~31.6 бит → ~14 000 классов</div>
-      <div class="d">версия iOS (4.5) + чип (4.5) + экран (3.6) + язык (9) + сеть (10).<br><b>Тысячи айфонов с одинаковым паспортом:</b> различает поведение и серверная история.</div>
+      <div class="t">iOS: ~32 бита, 14 000 классов</div>
+      <div class="d">тысячи айфонов с одинаковым паспортом, различают поведение и серверная история</div>
     </div>
   </div>
 </body>

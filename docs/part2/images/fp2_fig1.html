@@ -9,81 +9,114 @@
     background: #0b1220;
     font-family: 'SF Mono', Menlo, Consolas, monospace;
     color: #dbe7f4;
-    padding: 60px 70px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
+    padding: 56px 64px;
   }
-  h2 { font-size: 52px; color: #f2f7fd; font-weight: 700; }
-  .dim { color: #6b8aa8; }
-  .flow { display: flex; align-items: stretch; gap: 26px; margin-top: 54px; }
-  .box {
+  h2 { font-size: 54px; color: #f2f7fd; font-weight: 700; line-height: 1.2; }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 40px;
     background: #101a2c;
     border: 3px solid #23374f;
     border-radius: 16px;
-    padding: 34px 36px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    padding: 32px 44px;
+    margin-top: 28px;
   }
-  .box .t { font-size: 40px; color: #2ee6a8; margin-bottom: 16px; font-weight: 700; }
-  .box .d { font-size: 33px; color: #9db8d4; line-height: 1.45; }
-  .arrow { font-size: 56px; color: #3d5a7a; align-self: center; flex: 0; }
-  .result {
-    background: rgba(46,230,168,0.08);
-    border: 3px solid rgba(46,230,168,0.4);
-    border-radius: 16px;
-    padding: 34px 36px;
-    flex: 1.35;
-    display: flex; flex-direction: column; justify-content: center;
+  .step .num {
+    flex: 0 0 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: rgba(46,230,168,0.1);
+    border: 3px solid rgba(46,230,168,0.45);
+    color: #2ee6a8;
+    font-size: 44px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
   }
-  .result .t { font-size: 40px; color: #2ee6a8; margin-bottom: 16px; font-weight: 700; }
-  .result .d { font-size: 33px; color: #cfe3f7; line-height: 1.5; }
-  .result b { color: #2ee6a8; }
-  .hook {
-    margin-top: 48px;
-    background: rgba(232,196,106,0.07);
-    border: 2px solid rgba(232,196,106,0.35);
-    border-radius: 14px;
-    padding: 30px 38px;
-    font-size: 34px;
+  .step .body { flex: 1; min-width: 0; }
+  .step .t { font-size: 42px; color: #f2f7fd; font-weight: 700; }
+  .step .t code { color: #2ee6a8; }
+  .step .d { font-size: 34px; color: #9db8d4; margin-top: 8px; }
+
+  .down {
+    text-align: center;
+    font-size: 48px;
+    color: #3d5a7a;
+    line-height: 1;
+    margin: 12px 0;
+  }
+
+  .step.final {
+    background: rgba(46,230,168,0.07);
+    border-color: rgba(46,230,168,0.45);
+  }
+
+  .step.hook {
+    border-style: dashed;
+    background: transparent;
+  }
+  .step.hook .num {
+    border-color: #e8c46a;
     color: #e8c46a;
-    line-height: 1.4;
+    background: rgba(232,196,106,0.08);
   }
-  .hook .dim { color: #9a8a60; }
+  .step.hook .t { color: #e8c46a; }
 </style>
 </head>
 <body>
   <h2>Телеметрия доезжает до банка зашифрованной</h2>
 
-  <div class="flow">
-    <div class="box">
-      <div class="t">JSON · 312 полей</div>
-      <div class="d">WebRTC IP, батарея, шрифты,<br>голоса, canvas-хеши</div>
+  <div class="step">
+    <div class="num">1</div>
+    <div class="body">
+      <div class="t">JSON, 312 полей</div>
+      <div class="d">WebRTC IP, батарея, шрифты, голоса, canvas-хеши</div>
     </div>
-    <div class="arrow">→</div>
-    <div class="box">
-      <div class="t">gzip</div>
-      <div class="d">CompressionStream,<br>сжатие ~10×</div>
+  </div>
+  <div class="down">&darr;</div>
+
+  <div class="step">
+    <div class="num">2</div>
+    <div class="body">
+      <div class="t">Сжатие gzip</div>
+      <div class="d">CompressionStream, тело меньше в 10 раз</div>
     </div>
-    <div class="arrow">→</div>
-    <div class="box">
-      <div class="t">AES-256-GCM</div>
-      <div class="d">ключ 32B случайный,<br>nonce 12B, tag 128bit</div>
+  </div>
+  <div class="down">&darr;</div>
+
+  <div class="step">
+    <div class="num">3</div>
+    <div class="body">
+      <div class="t">Шифрование <code>AES-256-GCM</code></div>
+      <div class="d">случайный ключ 32 байта, nonce 12 байт, тег 128 бит</div>
     </div>
-    <div class="arrow">→</div>
-    <div class="box">
-      <div class="t">RSA-OAEP</div>
-      <div class="d">ключ шифруется<br>ключом банка из кода</div>
+  </div>
+  <div class="down">&darr;</div>
+
+  <div class="step">
+    <div class="num">4</div>
+    <div class="body">
+      <div class="t">Ключ шифруется <code>RSA-OAEP</code></div>
+      <div class="d">публичным ключом банка, PEM захардкожен в скрипт</div>
     </div>
-    <div class="arrow">→</div>
-    <div class="result">
-      <div class="t">POST web2web.tbank.ru</div>
-      <div class="d">{aes_key, gzip_data,<br>nonce, tag}<br><br>ответ: <b>fingerprintId</b></div>
+  </div>
+  <div class="down">&darr;</div>
+
+  <div class="step final">
+    <div class="num">5</div>
+    <div class="body">
+      <div class="t">POST на <code>web2web.tbank.ru</code></div>
+      <div class="d">в ответ сервер выдаёт постоянный fingerprintId</div>
     </div>
   </div>
 
-  <div class="hook">Как вскрыли: обернули crypto.subtle.encrypt до загрузки скрипта <span class="dim">→</span> поймали AES-ключ до RSA <span class="dim">→</span> расшифровали свой же payload</div>
+  <div class="step hook">
+    <div class="num">?</div>
+    <div class="body">
+      <div class="t">Как вскрыли</div>
+      <div class="d">обернули crypto.subtle.encrypt до загрузки скрипта и поймали AES-ключ до RSA</div>
+    </div>
+  </div>
 </body>
 </html>
